@@ -8596,6 +8596,10 @@ impl HostList {
                 Step::Run(work, _) | Step::Host(work) => {
                     if matches!(step, Step::Run(..)) {
                         batch.title_written();
+                    } else if !batch.due_textures.is_empty() {
+                        // Host callbacks can use a refresh result, including the
+                        // mip mask that maps a reserved texture for this upload.
+                        batch.check_textures();
                     }
                     work();
                     // It wrote title memory, where is not known here: the
